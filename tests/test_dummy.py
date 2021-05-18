@@ -1,4 +1,3 @@
-from copy import Error
 from pytest import raises
 
 
@@ -7,5 +6,5 @@ class TestDummy:
         assert 1 == 1
 
     def test_dummy2(self):
-        with raises(Error):
-            raise Error("test")
+        with raises(Exception):
+            raise Exception("test")

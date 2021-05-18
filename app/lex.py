@@ -1,3 +1,4 @@
+import re
 import ply.lex as lex
 
 tokens = (
@@ -5,6 +6,7 @@ tokens = (
     'FLOAT',
     'STRING',
     'BOOLEAN',
+    'ASSIGN',
     'PLUS',
     'MINUS',
     'TIMES',
@@ -29,6 +31,11 @@ tokens = (
     'RPAREN',
     'LBRACK',
     'RBRACK',
+    'INT_VALUE',
+    'FLOAT_VALUE',
+    'BOOLEAN_VALUE',
+    'STRING_VALUE',
+    'END_STATEMENT',
     'ID'
 )
 
@@ -37,11 +44,12 @@ t_INT = r'int'
 t_FLOAT = r'float'
 t_STRING = r'string'
 t_BOOLEAN = r'bool'
+t_ASSIGN = r'='
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
-t_POW = r'^'
+t_POW = r'\^'
 t_EQUALS = r'=='
 t_DIFFERENT = r'!='
 t_GREAT_THAN = r'>'
@@ -61,6 +69,7 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACK = r'{'
 t_RBRACK = r'}'
+t_END_STATEMENT = r';'
 t_ID = r'[a-zA-Z]+[a-zA-Z0-9]*'
 
 
@@ -100,8 +109,9 @@ t_ignore = ' \t'
 
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    error = re.match(r'(.+?)[\s;]', t.value)
+    print("Illegal token '%s'" % t.value[error.span()[0]: error.span()[1]-1])
+    t.lexer.skip(error.span()[1]-1)
 
 
 # Build the lexer
