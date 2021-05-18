@@ -4,7 +4,8 @@ import ply.lex as lex
 
 class LexManager:
 
-    errors = []
+    def __init__(self):
+        self.errors = []
 
     reserved = {
         'int': 'INT',
@@ -18,8 +19,8 @@ class LexManager:
         'print': 'PRINT',
         'do': 'DO',
         'for': 'FOR',
-        'true': 'BOOLEAN_VALUE',
-        'false': 'BOOLEAN_VALUE'
+        'true': 'BOOLEAN_VALUE_T',
+        'false': 'BOOLEAN_VALUE_F'
     }
 
     literals = ['=', '+', '-', '*', '/', '^',
@@ -32,7 +33,6 @@ class LexManager:
         'LESS_EQUAL',
         'AND',
         'OR',
-        'END_STATEMENT',
         'INT_VALUE',
         'FLOAT_VALUE',
         'STRING_VALUE',
@@ -63,11 +63,6 @@ class LexManager:
         t.value = int(t.value)
         return t
 
-    def t_BOOLEAN_VALUE(self, t):
-        r'true|false'
-        t.value = t.value == "true"
-        return t
-
     def t_STRING_VALUE(self, t):
         r'".*"'
         t.value = t.value[1:-1]
@@ -80,9 +75,12 @@ class LexManager:
     t_ignore = ' \t'
 
     def t_error(self, t):
-        error = re.match(r'(.+?)[\s;]', t.value)
-        t.value = t.value[error.span()[0]: error.span()[1]-1]
         self.errors.append(t)
+        error = re.match(r'.+?[\s;]', t.value)
+        if error is None:
+            t.lexer.skip(len(t.value))
+            return
+        t.value = t.value[error.span()[0]: error.span()[1]-1]
         t.lexer.skip(error.span()[1]-1)
 
     def build(self, **kwargs):
