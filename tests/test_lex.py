@@ -1,15 +1,5 @@
 import os
-from pytest import fixture
 from app.lex import LexManager
-
-
-@fixture()
-def prepare():
-    lexer = Lexer()
-    lexer.build()
-    print('pre')
-    yield lexer
-    print("post")
 
 
 class TestLex:
