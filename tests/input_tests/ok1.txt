@@ -5,9 +5,9 @@ int RES;
 RES=A+9;
 float res2;
 res2 = B * 5.0;
-float other
-other = 5 ^ 2
-print(other)
+float other;
+other = 5 ^ 2;
+print(other);
 
 print("El resultado es:");
 print(RES);
@@ -22,7 +22,7 @@ else {
   print("c");
 }
 
-int a
+int a;
 for(a = 0; a < 5; a=a+1) {
   print(a);
 }
@@ -35,12 +35,12 @@ while(a<10) {
 do {
   a= a + 1;
   print(a);
-} while(a<15)
+} while(a<15);
 
 if(true && true != false) {
-  print("true")
+  print("true");
 }
 
 if(true || false == true) {
-  print("false")
+  print("false");
 }

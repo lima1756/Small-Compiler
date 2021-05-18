@@ -5,85 +5,62 @@ import ply.lex as lex
 class LexManager:
 
     errors = []
-    tokens = (
-        'INT',
-        'FLOAT',
-        'STRING',
-        'BOOLEAN',
-        'ASSIGN',
-        'PLUS',
-        'MINUS',
-        'TIMES',
-        'DIVIDE',
-        'POW',
+
+    reserved = {
+        'int': 'INT',
+        'float': 'FLOAT',
+        'string': 'STRING',
+        'bool': 'BOOLEAN',
+        'if': 'IF',
+        'else': 'ELSE',
+        'elif': 'ELIF',
+        'while': 'WHILE',
+        'print': 'PRINT',
+        'do': 'DO',
+        'for': 'FOR',
+        'true': 'BOOLEAN_VALUE',
+        'false': 'BOOLEAN_VALUE'
+    }
+
+    literals = ['=', '+', '-', '*', '/', '^',
+                ">", "<", '(', ')', '{', '}', ';']
+
+    tokens = [
         'EQUALS',
         'DIFFERENT',
-        'GREAT_THAN',
-        'LESS_THAN',
         'GREAT_EQUAL',
         'LESS_EQUAL',
         'AND',
         'OR',
-        'PRINT',
-        'IF',
-        'ELSE',
-        'ELIF',
-        'WHILE',
-        'DO',
-        'FOR',
-        'LPAREN',
-        'RPAREN',
-        'LBRACK',
-        'RBRACK',
+        'END_STATEMENT',
         'INT_VALUE',
         'FLOAT_VALUE',
-        'BOOLEAN_VALUE',
         'STRING_VALUE',
-        'END_STATEMENT',
         'ID'
-    )
+    ] + list(reserved.values())
 
     # Regular expression rules for simple tokens
-    t_INT = r'int'
-    t_FLOAT = r'float'
-    t_STRING = r'string'
-    t_BOOLEAN = r'bool'
-    t_ASSIGN = r'='
-    t_PLUS = r'\+'
-    t_MINUS = r'-'
-    t_TIMES = r'\*'
-    t_DIVIDE = r'/'
-    t_POW = r'\^'
+
     t_EQUALS = r'=='
     t_DIFFERENT = r'!='
-    t_GREAT_THAN = r'>'
-    t_LESS_THAN = r'<'
     t_GREAT_EQUAL = r'>='
     t_LESS_EQUAL = r'<='
     t_AND = r'&&'
     t_OR = r'\|\|'
-    t_PRINT = r'print'
-    t_IF = r'if'
-    t_ELSE = r'else'
-    t_ELIF = r'elif'
-    t_WHILE = r'while'
-    t_DO = r'do'
-    t_FOR = r'for'
-    t_LPAREN = r'\('
-    t_RPAREN = r'\)'
-    t_LBRACK = r'{'
-    t_RBRACK = r'}'
-    t_END_STATEMENT = r';'
-    t_ID = r'[a-zA-Z]+[a-zA-Z0-9]*'
+
+    def t_ID(self, t):
+        r'[a-zA-Z]+[a-zA-Z0-9]*'
+        t.type = self.reserved.get(t.value, 'ID')
+        return t
+
+    def t_FLOAT_VALUE(self, t):
+        r'[+-]?[0-9]*\.[0-9]+'
+        t.value = float(t.value)
+        return t
 
     def t_INT_VALUE(self, t):
         r'[+-]?[0-9]+'
         t.value = int(t.value)
-        return t
-
-    def t_FLOAT_VALUE(self, t):
-        r'[+-]?([0-9]*[.])?[0-9]+'
-        t.value = float(t.value)
         return t
 
     def t_BOOLEAN_VALUE(self, t):
