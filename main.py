@@ -1,25 +1,32 @@
 import sys
+import pytest
 from app import execute
 
+
 def run():
-  execute()
-  pass
+    execute()
+    pass
+
 
 def test():
-  # TODO: run tests
-  pass
+    pytest.main(args=["."])
+    pass
+
 
 def install():
-  # TODO: install requirements.txt
-  pass
+    # TODO: install requirements.txt
+    pass
+
 
 def prepare():
-  # TODO: prepare env
-  pass
+    # TODO: prepare env
+    pass
+
 
 def init():
-  # TODO: source env/bin/activate
-  pass
+    # TODO: source env/bin/activate
+    pass
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1 or sys.argv[1] == "run":
