@@ -1,0 +1,46 @@
+int A;
+A=5;
+float B=-3.05;
+int RES;
+RES=A+9;
+float res2;
+res2 = B * 5.0;
+float other;
+other = 5 ^ 2;
+print(other);
+
+print("El resultado es:");
+print(RES);
+print(res2);
+if(RES < res2){
+  print("a");
+}
+elif(RES > res2){
+  print("b");
+}
+else {
+  print("c");
+}
+
+int a;
+for(a = 0; a < 5; a=a+1) {
+  print(a);
+}
+
+while(a<10) {
+  a= a + 1;
+  print(a);
+}
+
+do {
+  a= a + 1;
+  print(a);
+} while(a<15);
+
+if(true && true != false) {
+  print("true");
+}
+
+if(true || false == true) {
+  print("false");
+}
