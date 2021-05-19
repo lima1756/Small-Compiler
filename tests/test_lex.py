@@ -257,7 +257,7 @@ class TestLex:
             assert len(self.lexManager.errors) == 0
 
     def test_incorrect_input(self):
-        with open(os.path.join(self.dir, "./input_tests/syntax_fail1.txt")) as f:
+        with open(os.path.join(self.dir, "./input_tests/lexical_fail1.txt")) as f:
             tokens = self.pass_tokens(f.read())
             assert len(tokens) == 15
             assert len(self.lexManager.errors) == 3

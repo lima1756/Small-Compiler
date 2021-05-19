@@ -18,3 +18,8 @@ class TestLex:
         with open(os.path.join(TestLex.dir, "./input_tests/ok2.txt")) as f:
             self.parser.parse(f.read())
             assert len(self.parseManager.errors) == 0
+
+    def test_incorrect_input(self):
+        with open(os.path.join(self.dir, "./input_tests/syntax_fail1.txt")) as f:
+            self.parser.parse(f.read())
+            assert len(self.parseManager.errors) == 3
