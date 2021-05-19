@@ -4,11 +4,22 @@ from .lex import LexManager
 
 class ParseManager:
 
+    tokens = LexManager.tokens
+    start = 'prog'
+    precedence = (
+        ('right', '='),
+        ('left', 'AND', 'OR'),
+        ('left', 'EQUALS', 'DIFFERENT'),
+        ('nonassoc', '<', '>', 'GREAT_EQUAL', 'LESS_EQUAL'),
+        ('left', '+', '-'),
+        ('left', '*', '/'),
+        ('left', '^'),
+        ('right', 'UMINUS'),
+    )
+
     def __init__(self):
         self.errors = []
-        self.tokens = LexManager.tokens
         self.lexer = LexManager().build()
-        self.start = 'prog'
 
     def p_prog(self, p):
         ''' prog : expression 
@@ -71,28 +82,26 @@ class ParseManager:
     def p_op_expression(self, p):
         ''' op_expression : val 
                           | assign_op 
-                          | bin_op '''
+                          | bin_op 
+                          | '-' val %prec UMINUS'''
 
     def p_assign_op(self, p):
         ''' assign_op : ID '=' op_expression '''
 
     def p_bin_op(self, p):
-        ''' bin_op : op_expression operator op_expression '''
-
-    def p_operator(self, p):
-        ''' operator : '+' 
-                     | '-' 
-                     | '*' 
-                     | '/' 
-                     | '^' 
-                     | '>' 
-                     | '<' 
-                     | AND 
-                     | OR 
-                     | EQUALS 
-                     | DIFFERENT 
-                     | GREAT_EQUAL 
-                     | LESS_EQUAL '''
+        ''' bin_op : op_expression '+' op_expression 
+                   | op_expression '-' op_expression
+                   | op_expression '*' op_expression
+                   | op_expression '/' op_expression
+                   | op_expression '^' op_expression
+                   | op_expression '>' op_expression
+                   | op_expression '<' op_expression
+                   | op_expression AND op_expression
+                   | op_expression OR op_expression
+                   | op_expression EQUALS op_expression
+                   | op_expression DIFFERENT op_expression
+                   | op_expression GREAT_EQUAL op_expression
+                   | op_expression LESS_EQUAL op_expression '''
 
     def p_val(self, p):
         ''' val : ID 

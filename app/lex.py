@@ -54,12 +54,12 @@ class LexManager:
         return t
 
     def t_FLOAT_VALUE(self, t):
-        r'[+-]?[0-9]*\.[0-9]+'
+        r'[0-9]*\.[0-9]+'
         t.value = float(t.value)
         return t
 
     def t_INT_VALUE(self, t):
-        r'[+-]?[0-9]+'
+        r'[0-9]+'
         t.value = int(t.value)
         return t
 
