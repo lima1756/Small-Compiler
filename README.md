@@ -7,6 +7,8 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 - [Project structure](#project-structure)
 - [Requirements](#requirements)
 - [How to run?](#how-to-run)
+  - [Using main.sh script](#using-main.sh-script)
+  - [Using commands directly](#using-commands-directly)
 - [Libraries used](#libraries-used)
 - [Tokens](#tokens)
 - [Syntax specification](#syntax-specification)
@@ -42,7 +44,7 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ## How to run?
 
-### Using main.sh script
+### Using `main.sh` script
 
 Execute main program (not doing anything yet):
 `./main.sh run`
