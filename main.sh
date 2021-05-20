@@ -79,7 +79,7 @@ case $1 in
     env
     ;;
 
-  source)
+  activate)
     source_func
     ;;
 
