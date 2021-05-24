@@ -87,7 +87,8 @@ class ParseManager:
         ''' op_expression : val 
                           | assign_op 
                           | bin_op 
-                          | '-' val %prec UMINUS'''
+                          | '-' val %prec UMINUS
+                          | '(' op_expression ')' '''
 
     def p_assign_op(self, p):
         ''' assign_op : ID '=' op_expression '''

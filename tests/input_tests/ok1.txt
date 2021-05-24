@@ -2,7 +2,7 @@ int A;
 A=5;
 int b;
 read(b);
-float B=-3.05;
+float B=((-3.05 + 5.5) * 2) + 22;
 int RES;
 RES=A+9;
 float res2;
