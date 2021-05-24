@@ -17,6 +17,7 @@ class LexManager:
         'elif': 'ELIF',
         'while': 'WHILE',
         'print': 'PRINT',
+        'read': 'READ',
         'do': 'DO',
         'for': 'FOR',
         'true': 'BOOLEAN_VALUE_T',

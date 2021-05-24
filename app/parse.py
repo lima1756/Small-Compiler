@@ -69,11 +69,15 @@ class ParseManager:
 
     def p_statement(self, p):
         ''' statement : print 
+                      | read
                       | op_expression 
                       | declaration '''
 
     def p_print(self, p):
         ''' print : PRINT '(' op_expression ')' '''
+
+    def p_read(self, p):
+        ''' read : READ '(' op_expression ')' '''
 
     def p_declaration(self, p):
         ''' declaration : type ID 
