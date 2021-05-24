@@ -241,6 +241,12 @@ class TestLex:
         assert tokens[0].type == 'ID'
         assert len(self.lexManager.errors) == 0
 
+    def test_read(self):
+        tokens = self.pass_tokens("read")
+        assert len(tokens) == 1
+        assert tokens[0].type == 'READ'
+        assert len(self.lexManager.errors) == 0
+
     def test_error(self):
         self.pass_tokens("%%_asf")
         assert len(self.lexManager.errors) == 1
@@ -253,7 +259,7 @@ class TestLex:
     def test_correct_input(self):
         with open(os.path.join(TestLex.dir, "./input_tests/ok1.txt")) as f:
             tokens = self.pass_tokens(f.read())
-            assert len(tokens) == 190
+            assert len(tokens) == 198
             assert len(self.lexManager.errors) == 0
 
     def test_incorrect_input(self):

@@ -81,7 +81,7 @@ class ParseManager:
 
     def p_declaration(self, p):
         ''' declaration : type ID 
-                        | type assign_op '''
+                        | type ID '=' op_expression '''
 
     def p_op_expression(self, p):
         ''' op_expression : val 

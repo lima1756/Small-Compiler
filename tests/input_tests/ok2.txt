@@ -2,6 +2,8 @@ int A=5;
 A=A*9;
 float B;
 B=5.0;
+int c;
+read(c);
 print("El resultado es:");
 if(RES < res2){
   ;

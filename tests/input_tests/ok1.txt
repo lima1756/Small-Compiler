@@ -1,5 +1,7 @@
 int A;
 A=5;
+int b;
+read(b);
 float B=-3.05;
 int RES;
 RES=A+9;
