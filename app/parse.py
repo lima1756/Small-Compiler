@@ -170,7 +170,13 @@ class ParseManager:
                           | '-' val %prec UMINUS
                           | '(' op_expression ')' '''
         if p[1] == '-':
-            p[0] = ('-', p[2][1], p[2])
+            if p[2][1] != "INT" and p[2][1] != "FLOAT":
+                self.errors.append("Can't use unary minus (negative) to a not number value, at line {}".format(
+                    p.lexer.lineno))
+            if p[2][0] == "val":
+                p[0] = ('val', p[2][1], -p[2][2])
+            else:
+                p[0] = ('-', p[2][1], p[2])
         elif p[1] == '(':
             p[0] = p[2]
         else:
@@ -206,9 +212,9 @@ class ParseManager:
                    | op_expression DIFFERENT op_expression
                    | op_expression GREAT_EQUAL op_expression
                    | op_expression LESS_EQUAL op_expression '''
-        if p[1][1] == "FLOAT" and p[3][1] == "INT":
+        if p[1][1] == "FLOAT" and p[3][1] == "INT" and p[2] != '^':
             p[3] = self.to_float(p[3])
-        if p[1][1] == "INT" and p[3][1] == "FLOAT":
+        if p[1][1] == "INT" and p[3][1] == "FLOAT" and p[2] != '^':
             p[1] = self.to_float(p[1])
         if p[1][1] == "INT" and p[3][1] == "STRING" or p[1][1] == "FLOAT" and p[3][1] == "STRING":
             p[1] = self.to_string(p[1])
@@ -238,12 +244,42 @@ class ParseManager:
             self.errors.append(
                 "Incompatible type {} with operation {}, at line {}".format(p[1][1], p[2], p.lexer.lineno))
             raise SyntaxError()
-        p[0] = (p[2], p[1][1], p[1], p[3])
+        if p[1][0] == "val" and p[3][0] == "val" and p[2] != "^":
+            if p[2] == "&&":
+                p[2] = " and "
+            if p[2] == "||":
+                p[2] = " or "
+            string_op = str(p[1][2]) + p[2] + str(p[3][2])
+            ans = eval(string_op)
+            if type(ans) == str:
+                p[0] = ('val', "STRING", '"'+ans+'"')
+            elif type(ans) == int:
+                p[0] = ('val', "INT", ans)
+            elif type(ans) == float:
+                p[0] = ('val', "FLOAT", ans)
+            elif type(ans) == bool:
+                p[0] = ('val', "BOOL", ans)
+        elif p[1][0] == "val" and p[3][0] == "val" and p[2] == "^":
+            ans = pow(p[1][2], p[3][2])
+            curr_type = None
+            if p[3][2] % 1 == 0 and p[1][1] == "INT":
+                curr_type = "INT"
+            elif p[3][2] % 1 == 0 and p[1][1] == "FLOAT":
+                curr_type = "FLOAT"
+            elif p[3][2] % 1 != 0:
+                curr_type = "FLOAT"
+            p[0] = ('val', curr_type, ans)
+        else:
+            p[0] = (p[2], p[1][1], p[1], p[3])
 
     def to_float(p, t):
+        if t[0] == "val":
+            return ("val", "FLOAT", float(t[2]))
         return ("to_float", "FLOAT", t)
 
     def to_string(p, t):
+        if t[0] == "val":
+            return ("val", "STRING", str(t[2]))
         return ("to_string", "STRING", t)
 
     def p_val(self, p):
@@ -259,10 +295,7 @@ class ParseManager:
                 self.errors.append("Variable {} hasn't been initialized but is being used, at line {}".format(
                     val.name, p.lexer.lineno))
                 raise SyntaxError()
-            if val.value != None:
-                p[0] = ('val', val.type, val.value)
-            else:
-                p[0] = ('ID', val.type, val.name)
+            p[0] = ('ID', val.type, val.name)
         else:
             p[0] = ('val',) + p[1]
 
