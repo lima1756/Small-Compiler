@@ -265,7 +265,7 @@ class TestLex:
     def test_correct_input2(self):
         with open(os.path.join(TestLex.dir, "./input_tests/ok2.txt")) as f:
             tokens = self.pass_tokens(f.read())
-            assert len(tokens) == 126
+            assert len(tokens) == 143
             assert len(self.lexManager.errors) == 0
 
     def test_incorrect_input(self):

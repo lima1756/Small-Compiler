@@ -66,7 +66,6 @@ class LexManager:
 
     def t_STRING_VALUE(self, t):
         r'".*"'
-        t.value = t.value[1:-1]
         return t
 
     def t_newline(self, t):

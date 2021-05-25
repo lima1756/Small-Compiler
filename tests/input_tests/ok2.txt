@@ -2,8 +2,10 @@ int A=5;
 A=A*9;
 float B;
 B=((-3.05 + 5.5) * 2) + 22;
-int c;
-read(c);
+int RES;
+read(RES);
+int res2;
+read(res2);
 print("El resultado es:");
 if(RES < res2){
   ;
@@ -15,6 +17,9 @@ else {
   ;
 }
 if(RES < res2){
+  ;
+}
+elif(RES > res2){
   ;
 }
 elif(RES > res2){

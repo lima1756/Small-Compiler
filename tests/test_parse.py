@@ -11,15 +11,15 @@ class TestLex:
 
     def test_correct_input1(self):
         with open(os.path.join(TestLex.dir, "./input_tests/ok1.txt")) as f:
-            self.parser.parse(f.read())
+            tree = self.parser.parse(f.read())
             assert len(self.parseManager.errors) == 0
 
     def test_correct_input2(self):
         with open(os.path.join(TestLex.dir, "./input_tests/ok2.txt")) as f:
-            self.parser.parse(f.read())
+            tree = self.parser.parse(f.read())
             assert len(self.parseManager.errors) == 0
 
     def test_incorrect_input(self):
         with open(os.path.join(self.dir, "./input_tests/syntax_fail1.txt")) as f:
             self.parser.parse(f.read())
-            assert len(self.parseManager.errors) == 3
+            assert len(self.parseManager.errors) == 4
