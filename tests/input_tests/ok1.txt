@@ -2,22 +2,22 @@ int A;
 A=5;
 int b;
 read(b);
-float B=((-3.05 + 5.5) * 2) + 22;
+float B=((-3.05 + 5.5) * 2.0) + 22.0;
 int RES;
 RES=A+9;
 float res2;
 res2 = B * 5.0;
 float other;
-other = 5 ^ 2;
+other = 5.0 ^ 2.2;
 print(other);
 
 print("El resultado es:");
 print(RES);
 print(res2);
-if(RES < res2){
+if(RES < 9){
   print("a");
 }
-elif(RES > res2){
+elif(RES > 1){
   print("b");
 }
 else {

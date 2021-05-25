@@ -1,7 +1,7 @@
 int A=5;
 A=A*9;
 float B;
-B=((-3.05 + 5.5) * 2) + 22;
+B=((-3.05 + 5.5) * 2.0) + 22.1;
 int RES;
 read(RES);
 int res2;

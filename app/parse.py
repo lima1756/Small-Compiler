@@ -6,7 +6,7 @@ class Symbol:
 
     def __init__(self, name, type, declaration_pos, value=None, init_pos=None):
         self.name = name
-        self.type = type
+        self.type = type.upper()
         self.declaration_pos = declaration_pos
         self.value = value
         self.init_pos = init_pos
@@ -43,10 +43,8 @@ class ParseManager:
                  | empty '''
         if len(p) == 3 and p[2][0] is not None:
             p[0] = (p[1],) + p[2]
-            print('a')
         else:
             p[0] = (p[1],)
-            print('a')
 
     def p_empty(self, p):
         'empty :'
@@ -168,7 +166,7 @@ class ParseManager:
                           | '-' val %prec UMINUS
                           | '(' op_expression ')' '''
         if p[1] == '-':
-            p[0] = ('-', p[2])
+            p[0] = ('-', p[2][1], p[2])
         elif p[1] == '(':
             p[0] = p[2]
         else:
@@ -181,7 +179,11 @@ class ParseManager:
                 p[1], p.lexer.lineno))
             raise SyntaxError()
         v1 = self.symbol_table[p[1]]
-        p[0] = ('=', v1.name, p[3])
+        if v1.type != p[3][1]:
+            self.errors.append(
+                "Incompatible types {} and {}, at line {}".format(v1.type, p[3][1], p.lexer.lineno))
+            raise SyntaxError()
+        p[0] = ('=', v1.type, v1.name, p[3])
 
     def p_bin_op(self, p):
         ''' bin_op : op_expression '+' op_expression 
@@ -197,7 +199,11 @@ class ParseManager:
                    | op_expression DIFFERENT op_expression
                    | op_expression GREAT_EQUAL op_expression
                    | op_expression LESS_EQUAL op_expression '''
-        p[0] = (p[2], p[1], p[3])
+        if p[1][1] != p[3][1]:
+            self.errors.append(
+                "Incompatible types {} and {}, at line {}".format(p[1][1], p[3][1], p.lexer.lineno))
+            raise SyntaxError()
+        p[0] = (p[2], p[1][1], p[1], p[3])
 
     def p_val(self, p):
         ''' val : ID 
@@ -208,10 +214,11 @@ class ParseManager:
                     p[1], p.lexer.lineno))
                 raise SyntaxError()
             else:
-                p[0] = ('ID', p[1])
+                val = self.symbol_table[p[1]]
+                p[0] = ('ID', val.type, val.name)
 
         else:
-            p[0] = p[1]
+            p[0] = ('val',) + p[1]
 
     def p_lit_val(self, p):
         ''' lit_val : INT_VALUE 
@@ -220,7 +227,7 @@ class ParseManager:
                     | BOOLEAN_VALUE_T 
                     | BOOLEAN_VALUE_F '''
         if p[1] == 'true' or p[1] == 'false':
-            p[0] = ('BOOLEAN', True) if p[1] == 'true' else ('BOOLEAN', False)
+            p[0] = ('BOOL', True) if p[1] == 'true' else ('BOOL', False)
         elif type(p[1]) == int:
             p[0] = ('INT', p[1])
         elif type(p[1]) == float:
