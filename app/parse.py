@@ -136,7 +136,7 @@ class ParseManager:
         if self.symbol_exists(p[3]):
             v = self.symbol_table[p[3]]
             v.value = None
-            v.init_pos == p.lexer.lineno
+            v.init_pos = p.lexer.lineno
             p[0] = ('READ', v.name)
         else:
             self.errors.append("Variable {} hasn't been defined, at line {}".format(
@@ -156,7 +156,11 @@ class ParseManager:
                 p[2], p[1], p.lexer.lineno)
             p[0] = ('DECL', p[2], p[1])
         else:
-            self.symbol_table[p[2]] = Symbol(p[2], p[1], p.lexer.lineno)
+            new_value = None
+            if p[4][0] == 'val':
+                new_value = p[4][2]
+            self.symbol_table[p[2]] = Symbol(
+                p[2], p[1], p.lexer.lineno, new_value, p.lexer.lineno)
             p[0] = ('DECL', p[2], p[1], ('=', p[2], p[4]))
 
     def p_op_expression(self, p):
@@ -183,6 +187,9 @@ class ParseManager:
             self.errors.append(
                 "Incompatible types {} and {}, at line {}".format(v1.type, p[3][1], p.lexer.lineno))
             raise SyntaxError()
+        if p[3][0] == 'val':
+            v1.value = p[3][2]
+        v1.init_pos = p.lexer.lineno
         p[0] = ('=', v1.type, v1.name, p[3])
 
     def p_bin_op(self, p):
@@ -199,11 +206,45 @@ class ParseManager:
                    | op_expression DIFFERENT op_expression
                    | op_expression GREAT_EQUAL op_expression
                    | op_expression LESS_EQUAL op_expression '''
+        if p[1][1] == "FLOAT" and p[3][1] == "INT":
+            p[3] = self.to_float(p[3])
+        if p[1][1] == "INT" and p[3][1] == "FLOAT":
+            p[1] = self.to_float(p[1])
+        if p[1][1] == "INT" and p[3][1] == "STRING" or p[1][1] == "FLOAT" and p[3][1] == "STRING":
+            p[1] = self.to_string(p[1])
+        if p[1][1] == "STRING" and p[3][1] == "INT" or p[1][1] == "STRING" and p[3][1] == "FLOAT":
+            p[3] = self.to_string(p[3])
         if p[1][1] != p[3][1]:
             self.errors.append(
                 "Incompatible types {} and {}, at line {}".format(p[1][1], p[3][1], p.lexer.lineno))
             raise SyntaxError()
+        if (
+            (
+                p[2] == "-" or
+                p[2] == "*" or
+                p[2] == "/" or
+                p[2] == "^" or
+                p[2] == ">" or
+                p[2] == "<" or
+                p[2] == "<=" or
+                p[2] == ">="
+            ) and (p[1][1] == "BOOL" or p[1][1] == "STRING")
+        ) or (
+            p[2] == "+" and p[1][1] == "BOOL"
+        ) or (
+            (p[2] == "&&" or p[2] == "||")
+            and (p[1][1] == "FLOAT" or p[1][1] == "INT" or p[1][1] == "STRING")
+        ):
+            self.errors.append(
+                "Incompatible type {} with operation {}, at line {}".format(p[1][1], p[2], p.lexer.lineno))
+            raise SyntaxError()
         p[0] = (p[2], p[1][1], p[1], p[3])
+
+    def to_float(p, t):
+        return ("to_float", "FLOAT", t)
+
+    def to_string(p, t):
+        return ("to_string", "STRING", t)
 
     def p_val(self, p):
         ''' val : ID 
@@ -213,10 +254,15 @@ class ParseManager:
                 self.errors.append("Variable {} hasn't been defined, at line {}".format(
                     p[1], p.lexer.lineno))
                 raise SyntaxError()
+            val = self.symbol_table[p[1]]
+            if not val.initialized():
+                self.errors.append("Variable {} hasn't been initialized but is being used, at line {}".format(
+                    val.name, p.lexer.lineno))
+                raise SyntaxError()
+            if val.value != None:
+                p[0] = ('val', val.type, val.value)
             else:
-                val = self.symbol_table[p[1]]
                 p[0] = ('ID', val.type, val.name)
-
         else:
             p[0] = ('val',) + p[1]
 
