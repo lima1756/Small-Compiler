@@ -161,7 +161,8 @@ class ParseManager:
                 new_value = p[4][2]
             self.symbol_table[p[2]] = Symbol(
                 p[2], p[1], p.lexer.lineno, new_value, p.lexer.lineno)
-            p[0] = ('DECL', p[2], p[1], ('=', p[2], p[4]))
+            p[0] = ('DECL', p[2], p[1], ('=', p[1],
+                    ('ID', p[1].upper(), p[2]), p[4]))
 
     def p_op_expression(self, p):
         ''' op_expression : val 
@@ -196,7 +197,7 @@ class ParseManager:
         if p[3][0] == 'val':
             v1.value = p[3][2]
         v1.init_pos = p.lexer.lineno
-        p[0] = ('=', v1.type, v1.name, p[3])
+        p[0] = ('=', v1.type, ('ID', v1.type, v1.name), p[3])
 
     def p_bin_op(self, p):
         ''' bin_op : op_expression '+' op_expression 
@@ -322,7 +323,6 @@ class ParseManager:
         p[0] = p[1]
 
     def p_error(self, p):
-        print("Syntax error in input!")
         self.errors.append(
             "Unexpected symbol {}, at line {}".format(p.value, p.lineno))
 
