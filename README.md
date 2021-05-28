@@ -18,9 +18,7 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ## TODO
 
-- [ ] generate ast
-- [ ] simplify ast to parse tree
-- [ ] verify semantics
+- [ ] Generate three address code
 
 ## Project structure
 
@@ -98,6 +96,7 @@ To run the main program (not doing anything yet):
 | elif reserved word | ELIF | elif |
 | while reserved word | WHILE | while |
 | print reserved word | PRINT | print |
+| read reserved word | READ | read |
 | do reserved word | DO | do |
 | for reserved word | FOR | for |
 | boolean value true | BOOLEAN_VALUE_T | true |
@@ -119,7 +118,7 @@ To run the main program (not doing anything yet):
 
 ||||
 |---|---|---|
-| prog |  → | expression │ prog expression 
+| prog |  → | expression prog │ ε 
 | expression |  →  |  closed_statement │  selection_statement │ iteration_statement
 | selection_statement | → |  IF special_statement │ IF special_statement ELSE blocked_content │ IF special_statement elif ELSE blocked_content
 | iteration_statement | → | WHILE special_statement │ DO blocked_content WHILE blocked_op ';' │ FOR '(' for_first for_second ')' blocked_content │ FOR '(' for_first for_second op_expression ')' blocked_content 
@@ -130,10 +129,11 @@ To run the main program (not doing anything yet):
 | closed_statement | → | ';' │ statement ';' 
 | for_first | → | ';'  │ assign_op ';' │ declaration ';'
 | for_second | → | ';'  │ op_expression ';'
-| statement | → | print │ op_expression │ declaration
+| statement | → | print │ read │ op_expression │ declaration
 | print | → | PRINT '(' op_expression ')'
-| declaration | → | type ID │ type assign_op
-| op_expression | → | val │ assign_op │ bin_op 
+| read | → | READ '(' ID ')'
+| declaration | → | type ID │ type ID '=' op_expression
+| op_expression | → | val │ assign_op │ bin_op │ '(' op_expression ')'│
 | assign_op | → | ID '=' op_expression
 | bin_op | → | op_expression symbol op_expression
 | val | → | ID │ lit_val
