@@ -1,0 +1,64 @@
+int A
+A = 5
+int b
+read b
+float B
+B = 26.9
+int RES
+t0 = A + 9
+RES = t0
+float res2
+t0 = B * 5.0
+res2 = t0
+float other
+other = 34.493241536530384
+print other
+print "El resultado es:"
+print RES
+print res2
+t0 = RES < 9
+if not t0 goto L1
+print "a"
+goto L0
+label L1
+t0 = RES > 1
+if not t0 goto L2
+print "b"
+goto L0
+label L2
+print "c"
+label L0
+int a
+a = 0
+label L3
+t0 = a < 5
+if not t0 goto L4
+print a
+t0 = a + 1
+a = t0
+goto L3
+label L4
+label L5
+t0 = a < 10
+if not t0 goto L6
+t1 = a + 1
+a = t1
+print a
+goto L5
+label L6
+label L7
+t0 = a + 1
+a = t0
+print a
+t0 = a < 15
+if t0 goto L7
+if not True goto L9
+print "true"
+goto L8
+label L9
+label L8
+if not True goto L11
+print "false"
+goto L10
+label L11
+label L10
