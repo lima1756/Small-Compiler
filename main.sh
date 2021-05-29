@@ -56,6 +56,11 @@ test_project() {
     pytest $params
 }
 
+lint() {
+  check_install
+  python3 -m flake8 --exclude=parsetab.py ./app --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+}
+
 run() {
   check_install
   python3 app
@@ -81,6 +86,10 @@ case $1 in
 
   activate)
     source_func
+    ;;
+
+  lint)
+    lint
     ;;
 
   *)

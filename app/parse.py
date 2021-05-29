@@ -12,7 +12,7 @@ class Symbol:
         self.init_pos = init_pos
 
     def initialized(self):
-        return self.init_pos != None
+        return self.init_pos is not None
 
 
 class ParseManager:
@@ -51,8 +51,8 @@ class ParseManager:
         pass
 
     def p_expression(self, p):
-        ''' expression : closed_statement 
-                       | selection_statement 
+        ''' expression : closed_statement
+                       | selection_statement
                        | iteration_statement '''
         p[0] = p[1]
 
@@ -82,7 +82,7 @@ class ParseManager:
             p[0] = (p[1], p[3], p[4], p[5], p[7])
 
     def p_elif(self, p):
-        ''' elif : ELIF special_statement 
+        ''' elif : ELIF special_statement
                  | elif ELIF special_statement '''
         if p[1] == 'elif':
             p[0] = ((p[1], p[2][0], p[2][1]),)
@@ -102,28 +102,28 @@ class ParseManager:
         p[0] = (p[1], p[2])
 
     def p_closed_statement(self, p):
-        ''' closed_statement : ';' 
+        ''' closed_statement : ';'
                              | statement ';' '''
         if p[1] != ";":
             p[0] = p[1]
 
     def p_for_first(self, p):
-        ''' for_first : ';' 
-                             | assign_op ';' 
-                             | declaration ';' '''
+        ''' for_first : ';'
+                      | assign_op ';'
+                      | declaration ';' '''
         if p[1] != ";":
             p[0] = p[1]
 
     def p_for_second(self, p):
-        ''' for_second : ';' 
-                             | op_expression ';' '''
+        ''' for_second : ';'
+                       | op_expression ';' '''
         if p[1] != ";":
             p[0] = p[1]
 
     def p_statement(self, p):
-        ''' statement : print 
+        ''' statement : print
                       | read
-                      | op_expression 
+                      | op_expression
                       | declaration '''
         p[0] = p[1]
 
@@ -144,7 +144,7 @@ class ParseManager:
             raise SyntaxError()
 
     def p_declaration(self, p):
-        ''' declaration : type ID 
+        ''' declaration : type ID
                         | type ID '=' op_expression '''
         if p[2] in self.symbol_table:
             value = self.symbol_table[p[2]]
@@ -165,9 +165,9 @@ class ParseManager:
                     ('ID', p[1].upper(), p[2]), p[4]))
 
     def p_op_expression(self, p):
-        ''' op_expression : val 
-                          | assign_op 
-                          | bin_op 
+        ''' op_expression : val
+                          | assign_op
+                          | bin_op
                           | '-' val %prec UMINUS
                           | '(' op_expression ')' '''
         if p[1] == '-':
@@ -200,7 +200,7 @@ class ParseManager:
         p[0] = ('=', v1.type, ('ID', v1.type, v1.name), p[3])
 
     def p_bin_op(self, p):
-        ''' bin_op : op_expression '+' op_expression 
+        ''' bin_op : op_expression '+' op_expression
                    | op_expression '-' op_expression
                    | op_expression '*' op_expression
                    | op_expression '/' op_expression
@@ -284,7 +284,7 @@ class ParseManager:
         return ("to_string", "STRING", t)
 
     def p_val(self, p):
-        ''' val : ID 
+        ''' val : ID
                 | lit_val '''
         if type(p[1]) == str:
             if not self.symbol_exists(p[1]):
@@ -301,10 +301,10 @@ class ParseManager:
             p[0] = ('val',) + p[1]
 
     def p_lit_val(self, p):
-        ''' lit_val : INT_VALUE 
-                    | FLOAT_VALUE 
-                    | STRING_VALUE 
-                    | BOOLEAN_VALUE_T 
+        ''' lit_val : INT_VALUE
+                    | FLOAT_VALUE
+                    | STRING_VALUE
+                    | BOOLEAN_VALUE_T
                     | BOOLEAN_VALUE_F '''
         if p[1] == 'true' or p[1] == 'false':
             p[0] = ('BOOL', True) if p[1] == 'true' else ('BOOL', False)
@@ -316,9 +316,9 @@ class ParseManager:
             p[0] = ('STRING', p[1])
 
     def p_type(self, p):
-        ''' type : INT 
-                 | FLOAT 
-                 | STRING 
+        ''' type : INT
+                 | FLOAT
+                 | STRING
                  | BOOLEAN '''
         p[0] = p[1]
 
