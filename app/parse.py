@@ -61,9 +61,9 @@ class ParseManager:
                                 | IF special_statement ELSE blocked_content
                                 | IF special_statement elif ELSE blocked_content '''
         if len(p) == 3:
-            p[0] = (p[1], p[2])
+            p[0] = (p[1], p[2], None, None)
         elif len(p) == 5:
-            p[0] = (p[1], p[2], (p[3], p[4]))
+            p[0] = (p[1], p[2], None, (p[3], p[4]))
         else:
             p[0] = (p[1], p[2], p[3], (p[4], p[5]))
 
@@ -77,7 +77,7 @@ class ParseManager:
         elif p[1] == "do":
             p[0] = (p[1], p[2], p[4])
         elif p[1] == "for" and p[5] == ')':
-            p[0] = (p[1], p[3], p[4], p[6])
+            p[0] = (p[1], p[3], p[4], None, p[6])
         elif p[1] == "for":
             p[0] = (p[1], p[3], p[4], p[5], p[7])
 
@@ -85,9 +85,9 @@ class ParseManager:
         ''' elif : ELIF special_statement 
                  | elif ELIF special_statement '''
         if p[1] == 'elif':
-            p[0] = (p[1], p[2])
+            p[0] = ((p[1], p[2][0], p[2][1]),)
         else:
-            p[0] = (p[1], (p[2], p[3]))
+            p[0] = (p[1][0], (p[2], p[3][0], p[3][1]))
 
     def p_blocked_content(self, p):
         ''' blocked_content : '{' prog '}' '''

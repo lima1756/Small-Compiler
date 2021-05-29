@@ -147,5 +147,5 @@ logs/
 .vscode/
 
 #parser
-*.out
+app/*.out
 parsetab.py

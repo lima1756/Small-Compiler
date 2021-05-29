@@ -1,0 +1,51 @@
+int A
+A = 5
+t0 = A * 9
+A = t0
+float B
+B = 26.9
+int RES
+read RES
+int res2
+read res2
+print "El resultado es:"
+t0 = RES < res2
+if not t0 goto L1
+goto L0
+label L1
+label L0
+t1 = RES < res2
+if not t1 goto L3
+goto L2
+label L3
+label L2
+t2 = RES < res2
+if not t2 goto L5
+goto L4
+label L5
+t3 = RES > res2
+if not t3 goto L6
+goto L4
+label L6
+t4 = RES > res2
+if not t4 goto L7
+goto L4
+label L7
+label L4
+int a
+a = 0
+label L8
+t0 = a < 5
+if not t0 goto L9
+t1 = a + 1
+a = t1
+goto L8
+label L9
+label L10
+t0 = a < 10
+if not t0 goto L11
+goto L10
+label L11
+label L12
+t1 = a < 15
+if t1 goto L12
