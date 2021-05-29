@@ -13,10 +13,14 @@ class TestTAC:
         with open(os.path.join(TestTAC.dir, "./input_tests/ok1.txt")) as f:
             tree = self.parser.parse(f.read())
             output = TACGenerator(tree).generate()
-            print(output)
+            expected_output = open(os.path.join(
+                TestTAC.dir, "./output_tests/ok1.out")).read()
+            assert output == expected_output
 
     def test_correct_input2(self):
         with open(os.path.join(TestTAC.dir, "./input_tests/ok2.txt")) as f:
             tree = self.parser.parse(f.read())
             output = TACGenerator(tree).generate()
-            print(output)
+            expected_output = open(os.path.join(
+                TestTAC.dir, "./output_tests/ok2.out")).read()
+            assert output == expected_output
