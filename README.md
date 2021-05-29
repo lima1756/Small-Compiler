@@ -18,7 +18,7 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ## TODO
 
-- [ ] Create main.py that allows to run the compiler and create an output file
+- [ ] More tests
 
 ## Project structure
 
@@ -156,12 +156,18 @@ To run the main program (not doing anything yet):
 
 ## Example input:
 
-[Code 1](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok1.txt)
+[Code 1: ok1.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok1.txt)
 
-[Code 2](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok2.txt)
+[Code 2: ok2.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok2.txt)
 
 
 
 ## Output:
 
 Currently when running the parser it generates a `parsetab.py` file, which is used by the parser in future process to accelerate it. Also it creates the `parser.out` file which describes the parser path and decision making.
+
+Runing the full compiler produces three address code like the following files:
+
+[Code 1 generated from ok1.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok1.out)
+
+[Code 2 generated from ok2.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok2.out)
