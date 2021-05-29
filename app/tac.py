@@ -17,6 +17,8 @@ class TACGenerator():
         return output
 
     def process_node(self, node):
+        if node is None:
+            return ""
         if node[0] == "DECL":
             return self.decl(node)
         elif node[0] == "if":
@@ -39,39 +41,87 @@ class TACGenerator():
             return ""
 
     def for_node(self, node):
-        return ""
+        output = ""
+        startLabel = "L"+str(self.label_counter)
+        self.label_counter += 1
+        endLabel = "L"+str(self.label_counter)
+        self.label_counter += 1
+        if node[1][0] == "DECL":
+            output += self.decl(node[1])
+        elif node[1] is not None:
+            output += self.operator_node(node[1])
+
+        output += "label {}\n".format(startLabel)
+        if node[2] is not None:
+            pre, val = self.possible_operator(node[2])
+            output += "{}if not {} goto {}\n".format(pre, val, endLabel)
+
+        for n in node[4]:
+            output += self.process_node(n)
+
+        if node[3] is not None:
+            output += self.operator_node(node[3])
+        output += "goto {}\n".format(startLabel)
+        output += "label {}\n".format(endLabel)
+        return output
 
     def do(self, node):
-        return ""
+        output = ""
+        startLabel = "L"+str(self.label_counter)
+        self.label_counter += 1
+
+        output += "label {}\n".format(startLabel)
+
+        for n in node[1]:
+            output += self.process_node(n)
+
+        pre, val = self.possible_operator(node[2])
+        output += "{}if {} goto {}\n".format(pre, val, startLabel)
+
+        return output
 
     def while_node(self, node):
-        return ""
+        output = ""
+        startLabel = "L"+str(self.label_counter)
+        self.label_counter += 1
+        endLabel = "L"+str(self.label_counter)
+        self.label_counter += 1
+
+        output += "label {}\n".format(startLabel)
+        pre, val = self.possible_operator(node[1][0])
+        output += "{}if not {} goto {}\n".format(pre, val, endLabel)
+
+        for n in node[1][1]:
+            output += self.process_node(n)
+
+        output += "goto {}\n".format(startLabel)
+        output += "label {}\n".format(endLabel)
+        return output
 
     def if_node(self, node):
         output = ""
         pre, val = self.possible_operator(node[1][0])
-        out = "L"+self.label_counter
+        out = "L"+str(self.label_counter)
         self.label_counter += 1
-        l1 = "L"+self.label_counter
+        l1 = "L"+str(self.label_counter)
         self.label_counter += 1
         output += "{}if not {} goto {}\n".format(pre, val, l1)
         for n in node[1][1]:
             output += self.process_node(n)
         output += "goto {}\n".format(out)
         output += "label {}\n".format(l1)
-        for i in range(2, len(node)):
-            if node[i][0] == "elif":
-                pre2, val2 = self.possible_operator(node[i][1][0])
-                ln = "L"+self.label_counter
-                self.label_counter += 1
-                output += "{}if not {} goto {}\n".format(pre2, val2, ln)
-                for n in node[i][1][1]:
-                    output += self.process_node(n)
-                output += "goto {}\n".format(out)
-                output += "label {}\n".format(ln)
-            if node[i][0] == "else":
-                for n in node[i][1][0]:
-                    output += self.process_node(n)
+        for i in range(len(node[2]) if node[2] is not None else 0):
+            pre2, val2 = self.possible_operator(node[2][i][1])
+            ln = "L"+str(self.label_counter)
+            self.label_counter += 1
+            output += "{}if not {} goto {}\n".format(pre2, val2, ln)
+            for n in node[2][i][2]:
+                output += self.process_node(n)
+            output += "goto {}\n".format(out)
+            output += "label {}\n".format(ln)
+        if node[3] is not None:
+            for n in node[3][1]:
+                output += self.process_node(n)
         output += "label {}\n".format(out)
         return output
 
