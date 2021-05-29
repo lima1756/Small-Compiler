@@ -35,7 +35,8 @@ class ParseManager:
 
     def __init__(self):
         self.errors = []
-        self.lexer = LexManager().build()
+        self.lexManager = LexManager()
+        self.lexer = self.lexManager.build()
         self.symbol_table = {}
 
     def p_prog(self, p):
@@ -322,8 +323,12 @@ class ParseManager:
         p[0] = p[1]
 
     def p_error(self, p):
-        self.errors.append(
-            "Unexpected symbol {}, at line {}".format(p.value, p.lineno))
+        if p:
+            self.errors.append(
+                "Unexpected symbol {}, at line {}".format(p.value, p.lineno))
+        else:
+            self.errors.append(
+                "Unexpected EOF")
 
     def build(self, **kwargs):
         self.parser = yacc.yacc(module=self, **kwargs)

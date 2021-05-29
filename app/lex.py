@@ -75,13 +75,14 @@ class LexManager:
     t_ignore = ' \t'
 
     def t_error(self, t):
-        self.errors.append(t)
         error = re.match(r'.+?[\s;]', t.value)
         if error is None:
             t.lexer.skip(len(t.value))
-            return
-        t.value = t.value[error.span()[0]: error.span()[1]-1]
-        t.lexer.skip(error.span()[1]-1)
+        else:
+            t.value = t.value[error.span()[0]: error.span()[1]-1]
+            t.lexer.skip(error.span()[1]-1)
+        self.errors.append(
+            "Token {} Not recognized at line {}".format(t.value, t.lineno))
 
     def build(self, **kwargs):
         self.lexer = lex.lex(module=self, **kwargs)
