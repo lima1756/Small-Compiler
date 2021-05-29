@@ -11,6 +11,8 @@ WARN="${YELLOW}WARN: ${NC}"
 # Directories
 BIN_DIR=./env/bin
 
+PARAMS=""
+
 source_func() {
   source "$BIN_DIR/activate"
 }
@@ -49,11 +51,7 @@ install() {
 
 test_project() {
   check_source
-  for i in "${@:2}"
-    do
-      params="$params $i"
-    done
-    pytest $params
+  pytest $PARAMS
 }
 
 lint() {
@@ -63,8 +61,13 @@ lint() {
 
 run() {
   check_install
-  python3 app
+  python3 -m app $PARAMS
 }
+
+for i in ${@:2}
+do
+  PARAMS="$PARAMS $i"
+done
 
 case $1 in
 
@@ -93,6 +96,6 @@ case $1 in
     ;;
 
   *)
-    echo -e "${WARN}unknown command\n"
+    run
     ;;
 esac
