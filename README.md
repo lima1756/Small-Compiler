@@ -18,7 +18,7 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ## TODO
 
-- [ ] Generate three address code
+- [ ] Create main.py that allows to run the compiler and create an output file
 
 ## Project structure
 
