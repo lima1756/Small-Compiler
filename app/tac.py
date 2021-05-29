@@ -8,6 +8,7 @@ class TACGenerator():
     def __init__(self, parse_tree):
         self.parse_tree = parse_tree
         self.t_counter = 0
+        self.label_counter = 0
 
     def generate(self):
         output = ""
@@ -47,7 +48,32 @@ class TACGenerator():
         return ""
 
     def if_node(self, node):
-        return ""
+        output = ""
+        pre, val = self.possible_operator(node[1][0])
+        out = "L"+self.label_counter
+        self.label_counter += 1
+        l1 = "L"+self.label_counter
+        self.label_counter += 1
+        output += "{}if not {} goto {}\n".format(pre, val, l1)
+        for n in node[1][1]:
+            output += self.process_node(n)
+        output += "goto {}\n".format(out)
+        output += "label {}\n".format(l1)
+        for i in range(2, len(node)):
+            if node[i][0] == "elif":
+                pre2, val2 = self.possible_operator(node[i][1][0])
+                ln = "L"+self.label_counter
+                self.label_counter += 1
+                output += "{}if not {} goto {}\n".format(pre2, val2, ln)
+                for n in node[i][1][1]:
+                    output += self.process_node(n)
+                output += "goto {}\n".format(out)
+                output += "label {}\n".format(ln)
+            if node[i][0] == "else":
+                for n in node[i][1][0]:
+                    output += self.process_node(n)
+        output += "label {}\n".format(out)
+        return output
 
     def operator_node(self, node):
         if node[0] == "=":

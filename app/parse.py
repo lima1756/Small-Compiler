@@ -77,7 +77,7 @@ class ParseManager:
         elif p[1] == "do":
             p[0] = (p[1], p[2], p[4])
         elif p[1] == "for" and p[5] == ')':
-            p[0] = (p[1], p[3], p[4], p[6])
+            p[0] = (p[1], p[3], p[4], None, p[6])
         elif p[1] == "for":
             p[0] = (p[1], p[3], p[4], p[5], p[7])
 
