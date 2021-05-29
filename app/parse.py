@@ -199,6 +199,20 @@ class ParseManager:
         v1.init_pos = p.lexer.lineno
         p[0] = ('=', v1.type, ('ID', v1.type, v1.name), p[3])
 
+    def bin_op_conversions(self, p):
+        if p[1][1] == "FLOAT" and p[3][1] == "INT" and p[2] != '^':
+            p[3] = self.to_float(p[3])
+        if p[1][1] == "INT" and p[3][1] == "FLOAT" and p[2] != '^':
+            p[1] = self.to_float(p[1])
+        if p[1][1] == "INT" and p[3][1] == "STRING" or p[1][1] == "FLOAT" and p[3][1] == "STRING":
+            p[1] = self.to_string(p[1])
+        if p[1][1] == "STRING" and p[3][1] == "INT" or p[1][1] == "STRING" and p[3][1] == "FLOAT":
+            p[3] = self.to_string(p[3])
+        if p[1][1] != p[3][1]:
+            self.errors.append(
+                "Incompatible types {} and {}, at line {}".format(p[1][1], p[3][1], p.lexer.lineno))
+            raise SyntaxError()
+
     def p_bin_op(self, p):
         ''' bin_op : op_expression '+' op_expression
                    | op_expression '-' op_expression
@@ -213,18 +227,7 @@ class ParseManager:
                    | op_expression DIFFERENT op_expression
                    | op_expression GREAT_EQUAL op_expression
                    | op_expression LESS_EQUAL op_expression '''
-        if p[1][1] == "FLOAT" and p[3][1] == "INT" and p[2] != '^':
-            p[3] = self.to_float(p[3])
-        if p[1][1] == "INT" and p[3][1] == "FLOAT" and p[2] != '^':
-            p[1] = self.to_float(p[1])
-        if p[1][1] == "INT" and p[3][1] == "STRING" or p[1][1] == "FLOAT" and p[3][1] == "STRING":
-            p[1] = self.to_string(p[1])
-        if p[1][1] == "STRING" and p[3][1] == "INT" or p[1][1] == "STRING" and p[3][1] == "FLOAT":
-            p[3] = self.to_string(p[3])
-        if p[1][1] != p[3][1]:
-            self.errors.append(
-                "Incompatible types {} and {}, at line {}".format(p[1][1], p[3][1], p.lexer.lineno))
-            raise SyntaxError()
+        self.bin_op_conversions(p)
         if (
             (
                 p[2] == "-" or
@@ -254,12 +257,8 @@ class ParseManager:
             ans = eval(string_op)
             if type(ans) == str:
                 p[0] = ('val', "STRING", '"'+ans+'"')
-            elif type(ans) == int:
-                p[0] = ('val', "INT", ans)
-            elif type(ans) == float:
-                p[0] = ('val', "FLOAT", ans)
-            elif type(ans) == bool:
-                p[0] = ('val', "BOOL", ans)
+            else:
+                p[0] = ('val', type(ans).__name__.upper(), ans)
         elif p[1][0] == "val" and p[3][0] == "val" and p[2] == "^":
             ans = pow(p[1][2], p[3][2])
             curr_type = None

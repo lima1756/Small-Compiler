@@ -19,22 +19,19 @@ class TACGenerator():
     def process_node(self, node):
         if node is None:
             return ""
-        if node[0] == "DECL":
-            return self.decl(node)
-        elif node[0] == "if":
-            return self.if_node(node)
-        elif node[0] == "for":
-            return self.for_node(node)
-        elif node[0] == "do":
-            return self.do(node)
-        elif node[0] == "while":
-            return self.while_node(node)
-        elif node[0] == "PRINT":
-            return self.print_node(node)
-        elif node[0] == "READ":
-            return self.read(node)
-        elif node[0] == "ID":
-            return self.id(node)
+        node_types = {
+            "DECL": self.decl,
+            "if": self.if_node,
+            "for": self.for_node,
+            "do": self.do,
+            "while": self.while_node,
+            "PRINT": self.print_node,
+            "READ": self.read,
+            "ID": self.id
+        }
+        type = node[0]
+        if type in node_types.keys():
+            return node_types[type](node)
         elif node[0] in TACGenerator.operators:
             return self.operator_node(node)
         else:
