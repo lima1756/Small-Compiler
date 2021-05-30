@@ -1,6 +1,9 @@
 # Small-Compiler
 Small compiler project created for TC3048 - Compiler Design course at Tec de Monterrey
 
+Test Status:
+![Test status](https://github.com/lima1756/Small-Compiler/actions/workflows/python-app.yml/badge.svg)
+
 ## Table of contents 
 
 - [Project structure](#project-structure)
