@@ -63,6 +63,9 @@ optional arguments:
 Run tests: 
 `./main.sh test <extra optional parameters for pytest>`
 
+Run lint: 
+`./main.sh lint`
+
 Install requirements:
 `./main.sh install`
 
@@ -85,6 +88,9 @@ Before running any test or the main program you need to install requirements:
 
 To run tests:
 `pytest <optional parameters for pytest>`
+
+To run lint:
+`python3 -m flake8 --exclude=parsetab.py ./app --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics`
 
 To run the main program (not doing anything yet):
 `python3 -m app`
