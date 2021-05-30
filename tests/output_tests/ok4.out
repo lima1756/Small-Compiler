@@ -1,0 +1,82 @@
+string c
+int length
+label L0
+print "Length: \n"
+read length
+t0 = length <= 40
+if not t0 goto L2
+print "character to draw:\n"
+read c
+int a
+a = 0
+label L3
+t1 = length - 2
+t0 = a < t1
+if not t0 goto L4
+int b
+b = 0
+label L5
+t2 = length - a
+t1 = t2 - 1
+t0 = b < t1
+if not t0 goto L6
+print " "
+t0 = b + 1
+b = t0
+goto L5
+label L6
+b = 0
+label L7
+t2 = 2 * a
+t1 = t2 + 1
+t0 = b < t1
+if not t0 goto L8
+print c
+t0 = b + 1
+b = t0
+goto L7
+label L8
+print "\n"
+t0 = a + 1
+a = t0
+goto L3
+label L4
+t0 = length - 4
+a = t0
+label L9
+t0 = a >= 0
+if not t0 goto L10
+int d
+d = 0
+label L11
+t2 = length - a
+t1 = t2 - 1
+t0 = d < t1
+if not t0 goto L12
+print " "
+t0 = d + 1
+d = t0
+goto L11
+label L12
+b = 0
+label L13
+t2 = 2 * a
+t1 = t2 + 1
+t0 = b < t1
+if not t0 goto L14
+print c
+t0 = b + 1
+b = t0
+goto L13
+label L14
+print "\n"
+t0 = a - 1
+a = t0
+goto L9
+label L10
+goto L1
+label L2
+print "Number should be smaller than 41\n"
+label L1
+t0 = length > 40
+if t0 goto L0

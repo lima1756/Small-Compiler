@@ -1,0 +1,99 @@
+string opcion
+opcion = ""
+float first
+float second
+float third
+int year
+label L0
+print "Choose an option\n"
+print "a)less, great or equal\n"
+print "b)Validate age\n"
+print "c)Exit\n"
+read opcion
+t0 = opcion == "a"
+if not t0 goto L3
+print "Three numbers to compare:\n"
+read first
+read second
+read third
+t0 = first == second
+if not t0 goto L5
+print "First == second\n"
+goto L4
+label L5
+t0 = first > second
+if not t0 goto L6
+print "First > second\n"
+goto L4
+label L6
+t0 = first < second
+if not t0 goto L7
+print "First < second\n"
+goto L4
+label L7
+t0 = first == third
+if not t0 goto L8
+print "First == third\n"
+goto L4
+label L8
+t0 = first > third
+if not t0 goto L9
+print "First > third\n"
+goto L4
+label L9
+t0 = first < third
+if not t0 goto L10
+print "first < third\n"
+goto L4
+label L10
+t0 = third == second
+if not t0 goto L11
+print "Second == third\n"
+goto L4
+label L11
+t0 = third > second
+if not t0 goto L12
+print "third > second\n"
+goto L4
+label L12
+t0 = third < second
+if not t0 goto L13
+print "second > third\n"
+goto L4
+label L13
+print "idk"
+label L4
+goto L2
+label L3
+t0 = opcion == "b"
+if not t0 goto L14
+print "Age to validate: \n"
+read year
+label L15
+t0 = year >= 0
+if not t0 goto L17
+t1 = year < 18
+if not t1 goto L19
+print "can't drink\n"
+goto L18
+label L19
+print "can drink \n"
+label L18
+goto L16
+label L17
+print "you haven't been born\n"
+label L16
+t0 = year < 0
+if t0 goto L15
+goto L2
+label L14
+t1 = opcion == "c"
+if not t1 goto L20
+print "exiting!\n"
+goto L2
+label L20
+print "please choose a correct option\n"
+label L2
+t0 = opcion != "c"
+goto L0
+label L1
