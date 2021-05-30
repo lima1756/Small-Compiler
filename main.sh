@@ -96,6 +96,6 @@ case $1 in
     ;;
 
   *)
-    run
+    echo -e "${WARN}unknown command\n"
     ;;
 esac
