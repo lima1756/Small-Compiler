@@ -72,6 +72,10 @@ class LexManager:
         r'\n+|\r+|(\r\n)+'
         t.lexer.lineno += len(t.value)
 
+    def t_comment(self, t):
+        r'\/\/.*'
+        print("comment")
+
     t_ignore = ' \t'
 
     def t_error(self, t):
