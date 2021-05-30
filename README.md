@@ -3,7 +3,6 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ## Table of contents 
 
-- [TODO](#TODO)
 - [Project structure](#project-structure)
 - [Requirements](#requirements)
 - [How to run?](#how-to-run)
@@ -16,23 +15,23 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 - [Example Input](#example-input)
 - [Output](#output)
 
-## TODO
-
-- [ ] More tests
-
 ## Project structure
 
 ```
 .
 ├── app                     # app's source code
+│   ├── __main__.py         # Uses all programs to generate the execution point for the small-compiler
 │   ├── lex.py              # lexer implementation using PLY
-│   └── parse.py            # parser implementation using PLY
+│   ├── parse.py            # parser implementation using PLY
+│   └── tac.py              # Generates thee address code from parse tree of parser
 │
 ├── tests                   # Unit testing directory
-│   └── input_tests         # directory with valid and invalid input code for testing
+│   ├── input_tests         # directory with valid and invalid input code for testing
+│   ├── output_tests        # output code from compiler used for testing
+│   └── parse_trees         # generated parse trees by compiler used for testing
 │
-├── main.sh                 # Script para ejecutar funciones generales del proyecto
-└── requirements.txt        # Lista de dependencias del proyecto (actualizar con "pip freeze > requirements.txt")
+├── main.sh                 # Execute different functions of the project
+└── requirements.txt        # List of dependencies (update with "pip freeze > requirements.txt")
 
 ```
 
@@ -44,8 +43,20 @@ Small compiler project created for TC3048 - Compiler Design course at Tec de Mon
 
 ### Using `main.sh` script
 
-Execute main program (not doing anything yet):
+Execute main program:
 `./main.sh run`
+
+```
+usage: ./main.sh run [-h] [arguments]
+Compile input code into three address code
+
+positional arguments:
+  input_file   input file path - required
+  output_file  output file path - optional
+
+optional arguments:
+  -h, --help   show this help message and exit
+```
 
 Run tests: 
 `./main.sh test <extra optional parameters for pytest>`
@@ -74,7 +85,19 @@ To run tests:
 `pytest <optional parameters for pytest>`
 
 To run the main program (not doing anything yet):
-`python3 app`
+`python3 -m app`
+
+```
+usage: python3 -m app [-h] [arguments]
+Compile input code into three address code
+
+positional arguments:
+  input_file   input file path - required
+  output_file  output file path - optional
+
+optional arguments:
+  -h, --help   show this help message and exit
+```
 
 
 ## Libraries used
@@ -156,10 +179,15 @@ To run the main program (not doing anything yet):
 
 ## Example input:
 
+Random Input
 [Code 1: ok1.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok1.txt)
 
 [Code 2: ok2.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok2.txt)
 
+Some more real code:
+[Code 3: ok3.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok3.txt)
+
+[Code 4: ok4.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok4.txt)
 
 
 ## Output:
@@ -171,3 +199,7 @@ Runing the full compiler produces three address code like the following files:
 [Code 1 generated from ok1.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok1.out)
 
 [Code 2 generated from ok2.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok2.out)
+
+[Code 3 generated from ok3.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok3.out)
+
+[Code 4 generated from ok4.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/output_tests/ok4.out)
