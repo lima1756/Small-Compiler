@@ -5,6 +5,8 @@ float second
 float third
 int year
 label L0
+t0 = opcion != "c"
+if not t0 goto L1
 print "Choose an option\n"
 print "a)less, great or equal\n"
 print "b)Validate age\n"
@@ -94,6 +96,5 @@ goto L2
 label L20
 print "please choose a correct option\n"
 label L2
-t0 = opcion != "c"
 goto L0
 label L1
