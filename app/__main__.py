@@ -4,7 +4,7 @@ from .tac import TACGenerator
 from .parse import ParseManager
 
 argument_parser = argparse.ArgumentParser(
-    description='Compile input code into three address code', usage='python3 -m app [--h] [options]')
+    description='Compile input code into three address code', usage='python3 -m app [-h] [arguments]')
 argument_parser.add_argument('input_file', metavar='input_file', type=str,
                              help='input file path')
 argument_parser.add_argument('output_file', metavar='output_file', type=str,
