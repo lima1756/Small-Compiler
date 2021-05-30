@@ -40,16 +40,12 @@ class ParseManager:
         self.symbol_table = {}
 
     def p_prog(self, p):
-        ''' prog : expression prog
-                 | empty '''
+        ''' prog : prog expression
+                 | expression'''
         if len(p) == 3 and p[2][0] is not None:
-            p[0] = (p[1],) + p[2]
+            p[0] = p[1] + (p[2],)
         else:
             p[0] = (p[1],)
-
-    def p_empty(self, p):
-        'empty :'
-        pass
 
     def p_expression(self, p):
         ''' expression : closed_statement
@@ -88,7 +84,7 @@ class ParseManager:
         if p[1] == 'elif':
             p[0] = ((p[1], p[2][0], p[2][1]),)
         else:
-            p[0] = (p[1][0], (p[2], p[3][0], p[3][1]))
+            p[0] = p[1] + ((p[2], p[3][0], p[3][1]),)
 
     def p_blocked_content(self, p):
         ''' blocked_content : '{' prog '}' '''
