@@ -268,6 +268,18 @@ class TestLex:
             assert len(tokens) == 143
             assert len(self.lexManager.errors) == 0
 
+    def test_correct_input3(self):
+        with open(os.path.join(TestLex.dir, "./input_tests/ok3.txt")) as f:
+            tokens = self.pass_tokens(f.read())
+            assert len(tokens) == 291
+            assert len(self.lexManager.errors) == 0
+
+    def test_correct_input4(self):
+        with open(os.path.join(TestLex.dir, "./input_tests/ok4.txt")) as f:
+            tokens = self.pass_tokens(f.read())
+            assert len(tokens) == 221
+            assert len(self.lexManager.errors) == 0
+
     def test_incorrect_input(self):
         with open(os.path.join(self.dir, "./input_tests/lexical_fail1.txt")) as f:
             tokens = self.pass_tokens(f.read())

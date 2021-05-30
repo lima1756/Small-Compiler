@@ -1,0 +1,78 @@
+// This is real code (almost)
+// a program that can do three things
+// a: compare three numbers
+// b: if you're allowed to drink
+// c: exit (because you can't exit if you don't choose this)
+string opcion = "";
+float first;
+float second;
+float third;
+int year;
+for(;;opcion!="c") {
+  print("Choose an option\n");
+  print("a)less, great or equal\n");
+  print("b)Validate age\n");
+  print("c)Exit\n");
+  read(opcion);
+  if(opcion == "a") {
+    print("Three numbers to compare:\n");
+    read(first);
+    read(second);
+    read(third);
+    if (first==second) {
+      print("First == second\n");
+    }
+    elif (first>second) {
+      print("First > second\n");
+    }
+    elif (first<second) {
+      print("First < second\n");
+    }
+    elif (first==third) {
+      print("First == third\n");
+    }
+    elif (first>third) {
+      print("First > third\n");
+    }
+    elif (first<third) {
+      print("first < third\n");
+    }
+    elif (third==second) {
+      print("Second == third\n");
+    } 
+    elif (third>second) {
+      print("third > second\n");
+    }
+    elif (third<second) {
+      print("second > third\n");
+    }
+    else {
+      print("idk");
+    }
+  }
+  elif(opcion == "b") {
+    print("Age to validate: \n");
+    read(year);
+    do {
+      if (year >= 0)
+      {
+        if (year < 18)
+        {
+          print("can't drink\n");
+        }
+        else {
+          print("can drink \n");
+        }
+      }
+      else {
+        print("you haven't been born\n");
+      }
+    } while (year < 0);
+  }
+  elif(opcion == "c") {
+    print("exiting!\n");
+  }
+  else {
+    print("please choose a correct option\n");
+  }
+}

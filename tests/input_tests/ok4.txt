@@ -1,0 +1,41 @@
+// This is real code (almost)
+// Draws a diamond with the given character
+// the diamon length must be less than 40
+string c;
+int length;
+do {
+  print("Length: \n");
+  read(length);
+  if (length<=40)
+  {
+    print("character to draw:\n");
+    read(c);
+    for (int a = 0; a < length-2; a= a+1)
+    {
+      for (int b = 0; b < length-a-1; b=b+1)
+      {
+        print(" ");
+      }
+      for (b = 0; b <((2 * a) + 1); b=b+1)
+      {
+        print(c);
+      }
+      print("\n");
+    }
+    for (a = length - 4; a >= 0; a=a-1)
+    {
+      for (int d = 0; d < length-a-1; d=d+1)
+      {
+        print(" ");
+      }
+      for (b = 0; b < ((2*a)+1); b=b+1)
+      {
+        print(c);
+      }
+      print("\n");
+    }
+  }
+  else {
+    print("Number should be smaller than 41\n");
+  }
+} while(length>40);
