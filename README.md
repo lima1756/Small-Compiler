@@ -135,13 +135,14 @@ optional arguments:
 | float value | FLOAT_VALUE | [0-9]*\.[0-9]+ |
 | string value | STRING_VALUE | ".*" |
 | id | ID | [a-zA-Z]+[a-zA-Z0-9]* |
+| comment |  | //.* |
 
 
 ## Syntax specification
 
 ||||
 |---|---|---|
-| prog |  → | expression prog │ ε 
+| prog |  → | prog expression │ expression 
 | expression |  →  |  closed_statement │  selection_statement │ iteration_statement
 | selection_statement | → |  IF special_statement │ IF special_statement ELSE blocked_content │ IF special_statement elif ELSE blocked_content
 | iteration_statement | → | WHILE special_statement │ DO blocked_content WHILE blocked_op ';' │ FOR '(' for_first for_second ')' blocked_content │ FOR '(' for_first for_second op_expression ')' blocked_content 
@@ -172,19 +173,21 @@ optional arguments:
 |7|left|AND, OR|
 |6|left|EQUALS, DIFFERENT|
 |5|nonassoc|\<, \>, GREAT_EQUAL, LESS_EQUAL|
-|4|left|+,-|
-|3|left|*,/|
+|4|left|+, -|
+|3|left|*, /|
 |2|left|^|
 |1|nonassoc|Unary -|
 
 ## Example input:
 
 Random Input
+
 [Code 1: ok1.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok1.txt)
 
 [Code 2: ok2.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok2.txt)
 
 Some more real code:
+
 [Code 3: ok3.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok3.txt)
 
 [Code 4: ok4.txt](https://github.com/lima1756/Small-Compiler/blob/main/tests/input_tests/ok4.txt)
