@@ -43,7 +43,7 @@ class TACGenerator():
         self.label_counter += 1
         endLabel = "L"+str(self.label_counter)
         self.label_counter += 1
-        if node[1][0] == "DECL":
+        if node[1] is not None and node[1][0] == "DECL":
             output += self.decl(node[1])
         elif node[1] is not None:
             output += self.operator_node(node[1])
